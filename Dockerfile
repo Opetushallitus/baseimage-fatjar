@@ -96,6 +96,7 @@ RUN apk --version
 RUN aws --version
 RUN java -version
 RUN j2 --version
+RUN cat /etc/alpine-release
 
 # Show directory sizes
 RUN du -d 2 -h /
