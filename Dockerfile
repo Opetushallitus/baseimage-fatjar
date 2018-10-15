@@ -57,8 +57,8 @@ ENV JDK_DL_PREFIX "http://download.oracle.com/otn-pub/java/jdk/8u181-b13/96a7b84
 ENV JDK_PACKAGE "jdk-8u181-linux-x64.tar.gz"
 ENV JCE_DL_PREFIX "http://download.oracle.com/otn-pub/java/jce/8/"
 ENV JCE_PACKAGE "jce_policy-8.zip"
-RUN wget -c -P /tmp/ --header "Cookie: oraclelicense=accept-securebackup-cookie" ${JDK_DL_PREFIX}/${JDK_PACKAGE}
-RUN wget -c -P /tmp/ --header "Cookie: oraclelicense=accept-securebackup-cookie" ${JCE_DL_PREFIX}/${JCE_PACKAGE}
+RUN wget -c -q -P /tmp/ --header "Cookie: oraclelicense=accept-securebackup-cookie" ${JDK_DL_PREFIX}/${JDK_PACKAGE}
+RUN wget -c -q -P /tmp/ --header "Cookie: oraclelicense=accept-securebackup-cookie" ${JCE_DL_PREFIX}/${JCE_PACKAGE}
 RUN mkdir -p /usr/java/latest
 RUN tar xf /tmp/${JDK_PACKAGE} -C /usr/java/latest --strip-components=1
 RUN ln -s /usr/java/latest/bin/* /usr/bin/
