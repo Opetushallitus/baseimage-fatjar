@@ -90,3 +90,18 @@ rm -rf /usr/java/latest/jre/lib/amd64/libglass.so
 rm -rf /usr/java/latest/jre/lib/amd64/libgstreamer-lite.so
 rm -rf /usr/java/latest/jre/lib/amd64/libjavafx*.so
 rm -rf /usr/java/latest/jre/lib/amd64/libjfx*.so
+
+echo "Installing Prometheus jmx_exporter"
+JMX_EXPORTER_VERSION="0.3.1"
+wget -q -P /root/jmx_prometheus_javaagent.jar https://repo1.maven.org/maven2/io/prometheus/jmx/jmx_prometheus_javaagent/${JMX_EXPORTER_VERSION}/jmx_prometheus_javaagent-${JMX_EXPORTER_VERSION}.jar
+
+echo "Installing Prometheus node_exporter"
+NODE_EXPORTER_VERSION="0.15.1"
+wget -q https://github.com/prometheus/node_exporter/releases/download/v${NODE_EXPORTER_VERSION}/node_exporter-${NODE_EXPORTER_VERSION}.linux-amd64.tar.gz
+tar -xvzf node_exporter-${NODE_EXPORTER_VERSION}.linux-amd64.tar.gz
+rm node_exporter-${NODE_EXPORTER_VERSION}.linux-amd64.tar.gz
+mv node_exporter-${NODE_EXPORTER_VERSION}.linux-amd64/node_exporter /root/
+rm -rf node_exporter-${NODE_EXPORTER_VERSION}.linux-amd64
+
+echo "Init Prometheus config file"
+echo "{}" > /root/prometheus.yaml
