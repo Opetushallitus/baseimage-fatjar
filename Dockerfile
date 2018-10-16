@@ -1,4 +1,7 @@
 FROM alpine:latest
+
+COPY files/dump_threads.sh /root/bin/
+
 WORKDIR /root/
 COPY *.sh ./
 RUN \
