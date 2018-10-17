@@ -2,6 +2,7 @@
 
 A Docker base image for JVM-based services.
 
+
 ## Testing locally
 
 You can test the build locally on your machine by running:
