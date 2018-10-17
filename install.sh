@@ -93,7 +93,8 @@ rm -rf /usr/java/latest/jre/lib/amd64/libjfx*.so
 
 echo "Installing Prometheus jmx_exporter"
 JMX_EXPORTER_VERSION="0.3.1"
-wget -q -P /root/jmx_prometheus_javaagent.jar https://repo1.maven.org/maven2/io/prometheus/jmx/jmx_prometheus_javaagent/${JMX_EXPORTER_VERSION}/jmx_prometheus_javaagent-${JMX_EXPORTER_VERSION}.jar
+wget -q https://repo1.maven.org/maven2/io/prometheus/jmx/jmx_prometheus_javaagent/${JMX_EXPORTER_VERSION}/jmx_prometheus_javaagent-${JMX_EXPORTER_VERSION}.jar
+mv jmx_prometheus_javaagent-${JMX_EXPORTER_VERSION}.jar jmx_prometheus_javaagent.jar
 
 echo "Installing Prometheus node_exporter"
 NODE_EXPORTER_VERSION="0.15.1"
