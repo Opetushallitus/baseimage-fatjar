@@ -1,6 +1,7 @@
 FROM adoptopenjdk/openjdk11:alpine-slim
 
 COPY files/dump_threads.sh /root/bin/
+COPY files/run.sh /tmp/scripts/run
 
 WORKDIR /root/
 COPY *.sh ./
