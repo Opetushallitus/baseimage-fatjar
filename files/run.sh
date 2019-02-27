@@ -33,7 +33,7 @@ CACERTSPWD="`grep "java_cacerts_pwd" /etc/oph-environment/opintopolku.yml | grep
 if [ -f "${CERT}" ]; then
   echo "Installing local certificates to Java..."
   openssl x509 -outform der -in ${CERT} -out /tmp/ssl.der
-  keytool -import -noprompt -storepass ${CACERTSPWD} -alias opintopolku -keystore /usr/java/latest/jre/lib/security/cacerts -file /tmp/ssl
+  keytool -import -noprompt -storepass ${CACERTSPWD} -alias opintopolku -keystore /opt/java/openjdk/lib/security/cacerts -file /tmp/ssl
 fi
 
 export LC_CTYPE=fi_FI.UTF-8
@@ -66,7 +66,7 @@ if [ -f "${STANDALONE_JAR}" ]; then
       YTLCERT="${CONFIGPATH}/suoritusrekisteri/ytlqa.crt"
       if [ -f "${YTLCERT}" ]; then
             echo "Installing YTL certificate for suoritusrekisteri"
-            keytool -import -noprompt -trustcacerts -alias ytl_qa_cert -storepass ${CACERTSPWD} -keystore /usr/java/latest/jre/lib/security/cacerts -file ${YTLCERT}
+            keytool -import -noprompt -trustcacerts -alias ytl_qa_cert -storepass ${CACERTSPWD} -keystore /opt/java/openjdk/lib/security/cacerts -file ${YTLCERT}
         else
             echo "YTL test certificate not found"
       fi
@@ -114,6 +114,7 @@ if [ -f "${STANDALONE_JAR}" ]; then
     JAVA_OPTS="$JAVA_OPTS -Dcom.sun.management.jmxremote.local.only=false"
     JAVA_OPTS="$JAVA_OPTS -Djava.rmi.server.hostname=localhost"
     JAVA_OPTS="$JAVA_OPTS -Xloggc:${LOGS}/${NAME}_gc.log"
+    JAVA_OPTS="$JAVA_OPTS -Xlog:gc*:file=${LOGS}/${NAME}_gc.log:uptime:filecount=10,filesize=10m"
     JAVA_OPTS="$JAVA_OPTS -XX:+HeapDumpOnOutOfMemoryError"
     JAVA_OPTS="$JAVA_OPTS -XX:HeapDumpPath=${HOME}/dumps/${NAME}_heap_dump-`date +%Y-%m-%d-%H-%M-%S`.hprof"
     JAVA_OPTS="$JAVA_OPTS -XX:ErrorFile=${LOGS}/${NAME}_hs_err.log"
