@@ -106,3 +106,6 @@ rm -rf node_exporter-${NODE_EXPORTER_VERSION}.linux-amd64
 
 echo "Init Prometheus config file"
 echo "{}" > /root/prometheus.yaml
+
+echo "Make run script executable"
+chmod ug+x /tmp/scripts/run

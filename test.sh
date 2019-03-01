@@ -11,6 +11,7 @@ cat /etc/alpine-release
 echo "Test that baseimage has files expected by the application during run script"
 ls -la /root/jmx_prometheus_javaagent.jar
 ls -la /root/node_exporter
+ls -la /tmp/scripts/run
 
 echo "Largest directories:"
 du -d 3 -m /|sort -nr|head -n 20
