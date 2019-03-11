@@ -110,3 +110,6 @@ echo "{}" > /root/prometheus.yaml
 
 echo "Make run script executable"
 chmod ug+x /tmp/scripts/run
+
+echo "Make oph-configuration directory to ensure run script works also for projects that do not supply such directory"
+mkdir /root/oph-configuration
