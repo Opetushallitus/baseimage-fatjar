@@ -46,11 +46,9 @@ nohup /root/node_exporter > /root/node_exporter.log  2>&1 &
 
 if [ ${DEBUG_ENABLED} == "true" ]; then
   echo "JDWP debugging enabled..."
-  STANDALONE_DEBUG_PARAMS=" -Xdebug -Xrunjdwp:transport=dt_socket,address=1233,server=y,suspend=n"
-  DEBUG_PARAMS=" -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=1233"
+  DEBUG_PARAMS=" -Xdebug -Xrunjdwp:transport=dt_socket,address=1233,server=y,suspend=n"
 else
   echo "JDWP debugging disabled..."
-  STANDALONE_DEBUG_PARAMS=""
   DEBUG_PARAMS=""
 fi
 
@@ -130,7 +128,7 @@ if [ -f "${STANDALONE_JAR}" ]; then
     JAVA_OPTS="$JAVA_OPTS -D${NAME}.properties=${HOME}/oph-configuration/${NAME}.properties"
     JAVA_OPTS="$JAVA_OPTS -javaagent:/root/jmx_prometheus_javaagent.jar=1134:/root/prometheus.yaml"
     JAVA_OPTS="$JAVA_OPTS ${SECRET_JAVA_OPTS}"
-    JAVA_OPTS="$JAVA_OPTS ${STANDALONE_DEBUG_PARAMS}"
+    JAVA_OPTS="$JAVA_OPTS ${DEBUG_PARAMS}"
     echo "java ${JAVA_OPTS} -jar ${STANDALONE_JAR}" > /root/java-cmd.txt
     java ${JAVA_OPTS} -jar ${STANDALONE_JAR}
 else
