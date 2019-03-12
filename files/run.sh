@@ -46,7 +46,7 @@ nohup /root/node_exporter > /root/node_exporter.log  2>&1 &
 
 if [ ${DEBUG_ENABLED} == "true" ]; then
   echo "JDWP debugging enabled..."
-  DEBUG_PARAMS=" -Xdebug -Xrunjdwp:transport=dt_socket,address=1233,server=y,suspend=n"
+  DEBUG_PARAMS=" -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:1233"
 else
   echo "JDWP debugging disabled..."
   DEBUG_PARAMS=""
@@ -113,7 +113,6 @@ if [ -f "${STANDALONE_JAR}" ]; then
     JAVA_OPTS="$JAVA_OPTS -Dcom.sun.management.jmxremote.rmi.port=${JMX_PORT}"
     JAVA_OPTS="$JAVA_OPTS -Dcom.sun.management.jmxremote.local.only=false"
     JAVA_OPTS="$JAVA_OPTS -Djava.rmi.server.hostname=localhost"
-    JAVA_OPTS="$JAVA_OPTS -Xloggc:${LOGS}/${NAME}_gc.log"
     JAVA_OPTS="$JAVA_OPTS -Xlog:gc*:file=${LOGS}/${NAME}_gc.log:uptime:filecount=10,filesize=10m"
     JAVA_OPTS="$JAVA_OPTS -XX:+HeapDumpOnOutOfMemoryError"
     JAVA_OPTS="$JAVA_OPTS -XX:HeapDumpPath=${HOME}/dumps/${NAME}_heap_dump-`date +%Y-%m-%d-%H-%M-%S`.hprof"
