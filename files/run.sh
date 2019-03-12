@@ -46,7 +46,7 @@ nohup /root/node_exporter > /root/node_exporter.log  2>&1 &
 
 if [ ${DEBUG_ENABLED} == "true" ]; then
   echo "JDWP debugging enabled..."
-  DEBUG_PARAMS=" -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:1233"
+  DEBUG_PARAMS=" -agentlib:jdwp=transport=dt_socket,address=*:1233,server=y,suspend=n"
 else
   echo "JDWP debugging disabled..."
   DEBUG_PARAMS=""
