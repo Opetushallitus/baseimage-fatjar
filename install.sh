@@ -16,9 +16,15 @@ apk --no-cache add \
   py-jinja2 \
   py-pip \
   py2-yaml \
+  ttf-dejavu \
   unzip \
   wget \
   zip
+
+echo "Kludging font libraries in place"
+ln -s /usr/lib/libfontconfig.so.1 /usr/lib/libfontconfig.so && \
+  ln -s /lib/libuuid.so.1 /usr/lib/libuuid.so.1 && \
+  ln -s /lib/libc.musl-x86_64.so.1 /usr/lib/libc.musl-x86_64.so.1
 
 echo "Installing tools for downloading environment configuration during service run script"
 pip install --upgrade pip
