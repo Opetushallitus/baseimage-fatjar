@@ -73,6 +73,9 @@ if [ -f "${STANDALONE_JAR}" ]; then
     elif [ ${NAME} == "virkailijan-tyopoyta" ]; then
       echo "Create common.properties"
       cp -fv ${BASEPATH}/oph-configuration/${NAME}.properties ${BASEPATH}/oph-configuration/common.properties
+    elif [ ${NAME} == "omatsivut" ]; then
+      echo "Create common.properties"
+      cp -fv ${BASEPATH}/oph-configuration/${NAME}.properties ${BASEPATH}/oph-configuration/common.properties
     elif [ ${NAME} == "ataru-hakija" ]; then
       export ATARU_HTTP_PORT=8080
       export CONFIG=/root/oph-configuration/config.edn
