@@ -121,7 +121,7 @@ if [ -f "${STANDALONE_JAR}" ]; then
     JAVA_OPTS="$JAVA_OPTS -javaagent:/root/jmx_prometheus_javaagent.jar=1134:/root/prometheus.yaml"
     JAVA_OPTS="$JAVA_OPTS ${SECRET_JAVA_OPTS}"
     JAVA_OPTS="$JAVA_OPTS ${DEBUG_PARAMS}"
-    JAVA_CMD="LD_LIBRARY_PATH=/usr/lib java ${JAVA_OPTS} -jar ${STANDALONE_JAR}"
+    JAVA_CMD="java ${JAVA_OPTS} -jar ${STANDALONE_JAR}"
     echo $JAVA_CMD > /root/java-cmd.txt
     eval $JAVA_CMD
 else
