@@ -121,8 +121,9 @@ if [ -f "${STANDALONE_JAR}" ]; then
     JAVA_OPTS="$JAVA_OPTS -javaagent:/root/jmx_prometheus_javaagent.jar=1134:/root/prometheus.yaml"
     JAVA_OPTS="$JAVA_OPTS ${SECRET_JAVA_OPTS}"
     JAVA_OPTS="$JAVA_OPTS ${DEBUG_PARAMS}"
-    echo "java ${JAVA_OPTS} -jar ${STANDALONE_JAR}" > /root/java-cmd.txt
-    java ${JAVA_OPTS} -jar ${STANDALONE_JAR}
+    JAVA_CMD="java ${JAVA_OPTS} -jar ${STANDALONE_JAR}"
+    echo $JAVA_CMD > /root/java-cmd.txt
+    $JAVA_CMD
 else
   echo "Fatal error: No fatjar found, exiting!"
   exit 1
