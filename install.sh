@@ -68,6 +68,14 @@ ln -s /usr/java/latest/bin/* /usr/bin/
 unzip -jo -d /usr/java/latest/jre/lib/security /tmp/${JCE_PACKAGE}
 rm /tmp/*.zip
 rm /tmp/*.tar.gz
+JAVA_SECURITY_FILE=/usr/java/latest/jre/lib/security/java.security
+TMP_SECURITY_FILE=/tmp/java.security.new
+BC_SECURITY_PROVIDER_LINE="security.provider.1=org.bouncycastle.jce.provider.BouncyCastleProvider"
+awk -v line_to_insert="$BC_SECURITY_PROVIDER_LINE" '/security.provider./ { if (inserted!=1) {print line_to_insert; inserted=1}  } { print $0 }' $JAVA_SECURITY_FILE > $TMP_SECURITY_FILE
+mv $TMP_SECURITY_FILE $JAVA_SECURITY_FILE
+echo "Petar cat"
+cat $JAVA_SECURITY_FILE
+echo "Petar cat END"
 
 echo "Removing unused JDK sources and libraries"
 rm /usr/java/latest/jre/lib/security/README.txt
