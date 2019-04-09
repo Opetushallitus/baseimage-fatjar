@@ -70,8 +70,8 @@ rm /tmp/*.zip
 rm /tmp/*.tar.gz
 JAVA_SECURITY_FILE=/usr/java/latest/jre/lib/security/java.security
 TMP_SECURITY_FILE=/tmp/java.security.new
-BC_SECURITY_PROVIDER_LINE="security.provider.1=org.bouncycastle.jce.provider.BouncyCastleProvider"
-awk -v line_to_insert="$BC_SECURITY_PROVIDER_LINE" '/security.provider./ { if (inserted!=1) {print line_to_insert; inserted=1}  } { print $0 }' $JAVA_SECURITY_FILE > $TMP_SECURITY_FILE
+BC_SECURITY_PROVIDER_LINE="security.provider.10=org.bouncycastle.jce.provider.BouncyCastleProvider"
+awk -v line_to_insert="$BC_SECURITY_PROVIDER_LINE" '/^security.provider./ { if (inserted!=1) {print line_to_insert; inserted=1}  } { print $0 }' $JAVA_SECURITY_FILE > $TMP_SECURITY_FILE
 mv $TMP_SECURITY_FILE $JAVA_SECURITY_FILE
 echo "Petar cat"
 cat $JAVA_SECURITY_FILE
