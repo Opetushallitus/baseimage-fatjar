@@ -73,9 +73,7 @@ TMP_SECURITY_FILE=/tmp/java.security.new
 BC_SECURITY_PROVIDER_LINE="security.provider.10=org.bouncycastle.jce.provider.BouncyCastleProvider"
 awk -v line_to_insert="$BC_SECURITY_PROVIDER_LINE" '/^security.provider./ { if (inserted!=1) {print line_to_insert; inserted=1}  } { print $0 }' $JAVA_SECURITY_FILE > $TMP_SECURITY_FILE
 mv $TMP_SECURITY_FILE $JAVA_SECURITY_FILE
-echo "Petar cat"
-cat $JAVA_SECURITY_FILE
-echo "Petar cat END"
+wget -c -q P /usr/java/latest/jre/lib/ext/ https://www.bouncycastle.org/download/bcprov-jdk15on-161.jar
 
 echo "Removing unused JDK sources and libraries"
 rm /usr/java/latest/jre/lib/security/README.txt
