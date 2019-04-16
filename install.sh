@@ -9,6 +9,7 @@ apk --no-cache add \
   ca-certificates \
   fontconfig \
   jq \
+  lftp \
   openssh \
   openssl \
   python \
