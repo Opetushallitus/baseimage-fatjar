@@ -67,14 +67,6 @@ echo "9a5c32411a6a06e22b69c495b7975034409fa1652d03aeb8eb5b6f59fd4594e0  /tmp/${J
 wget -c -q -P /tmp/ ${FILES_URL_PREFIX}/${JCE_PACKAGE}
 echo "f3020a3922efd6626c2fff45695d527f34a8020e938a49292561f18ad1320b59  /tmp/${JCE_PACKAGE}" |sha256sum -c
 
-echo "Installing Java JDK"
-mkdir -p /usr/java/latest
-tar xf /tmp/${JDK_PACKAGE} -C /usr/java/latest --strip-components=1
-ln -s /usr/java/latest/bin/* /usr/bin/
-unzip -jo -d /usr/java/latest/jre/lib/security /tmp/${JCE_PACKAGE}
-rm /tmp/*.zip
-rm /tmp/*.tar.gz
-
 echo "Installing Bouncy Castle bcprov security provider"
 BCPROV_DL_PREFIX="https://www.bouncycastle.org/download"
 BCPROV_PACKAGE="bcprov-jdk15on-161.jar"
@@ -82,34 +74,11 @@ wget -c -q -P /usr/java/latest/jre/lib/ext/ ${BCPROV_DL_PREFIX}/${BCPROV_PACKAGE
 echo "dba6e408f205215ad1a89b70b37353d3cdae4ec61037e1feee885704e2413458  /usr/java/latest/jre/lib/ext/${BCPROV_PACKAGE}" |sha256sum -c
 
 echo "Updating java.security"
-JAVA_SECURITY_FILE=/usr/java/latest/jre/lib/security/java.security
+JAVA_SECURITY_FILE=/opt/java/openjdk/jre/lib/security/java.security
 TMP_SECURITY_FILE=/tmp/java.security.new
 BC_SECURITY_PROVIDER_LINE="security.provider.10=org.bouncycastle.jce.provider.BouncyCastleProvider"
 awk -v line_to_insert="$BC_SECURITY_PROVIDER_LINE" '/^security.provider./ { if (inserted!=1) {print line_to_insert; inserted=1}  } { print $0 }' $JAVA_SECURITY_FILE > $TMP_SECURITY_FILE
 mv $TMP_SECURITY_FILE $JAVA_SECURITY_FILE
-
-echo "Removing unused JDK sources and libraries"
-rm /usr/java/latest/jre/lib/security/README.txt
-rm -rf /usr/java/latest/*src.zip
-rm -rf /usr/java/latest/lib/missioncontrol
-rm -rf /usr/java/latest/lib/visualvm
-rm -rf /usr/java/latest/lib/*javafx*
-rm -rf /usr/java/latest/jre/lib/plugin.jar
-rm -rf /usr/java/latest/jre/lib/ext/jfxrt.jar
-rm -rf /usr/java/latest/jre/bin/javaws
-rm -rf /usr/java/latest/jre/lib/javaws.jar
-rm -rf /usr/java/latest/jre/lib/desktop
-rm -rf /usr/java/latest/jre/plugin/
-rm -rf /usr/java/latest/jre/lib/deploy*
-rm -rf /usr/java/latest/jre/lib/*javafx*
-rm -rf /usr/java/latest/jre/lib/*jfx*
-rm -rf /usr/java/latest/jre/lib/amd64/libdecora_sse.so
-rm -rf /usr/java/latest/jre/lib/amd64/libprism_*.so
-rm -rf /usr/java/latest/jre/lib/amd64/libfxplugins.so
-rm -rf /usr/java/latest/jre/lib/amd64/libglass.so
-rm -rf /usr/java/latest/jre/lib/amd64/libgstreamer-lite.so
-rm -rf /usr/java/latest/jre/lib/amd64/libjavafx*.so
-rm -rf /usr/java/latest/jre/lib/amd64/libjfx*.so
 
 echo "Installing Prometheus jmx_exporter"
 JMX_EXPORTER_VERSION="0.3.1"

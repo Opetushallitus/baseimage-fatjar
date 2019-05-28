@@ -13,6 +13,7 @@ ls -la /root/jmx_prometheus_javaagent.jar
 ls -la /root/node_exporter
 ls -la /tmp/scripts/run
 ls -la /root/oph-configuration/
+ls -la /opt/java/openjdk/jre/lib/security/cacerts
 
 echo "Largest directories:"
 du -d 3 -m /|sort -nr|head -n 20
