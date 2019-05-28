@@ -1,4 +1,4 @@
-FROM alpine:latest
+FROM adoptopenjdk/openjdk8:alpine-slim
 
 COPY files/dump_threads.sh /root/bin/
 COPY files/run.sh /tmp/scripts/run
