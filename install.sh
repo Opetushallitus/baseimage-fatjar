@@ -70,6 +70,18 @@ unzip -jo -d /usr/java/latest/jre/lib/security /tmp/${JCE_PACKAGE}
 rm /tmp/*.zip
 rm /tmp/*.tar.gz
 
+echo "Installing Bouncy Castle bcprov security provider"
+BCPROV_DL_PREFIX="https://www.bouncycastle.org/download"
+BCPROV_PACKAGE="bcprov-jdk15on-161.jar"
+wget -c -q -P /usr/java/latest/jre/lib/ext/ ${BCPROV_DL_PREFIX}/${BCPROV_PACKAGE}
+
+echo "Updating java.security"
+JAVA_SECURITY_FILE=/usr/java/latest/jre/lib/security/java.security
+TMP_SECURITY_FILE=/tmp/java.security.new
+BC_SECURITY_PROVIDER_LINE="security.provider.10=org.bouncycastle.jce.provider.BouncyCastleProvider"
+awk -v line_to_insert="$BC_SECURITY_PROVIDER_LINE" '/^security.provider./ { if (inserted!=1) {print line_to_insert; inserted=1}  } { print $0 }' $JAVA_SECURITY_FILE > $TMP_SECURITY_FILE
+mv $TMP_SECURITY_FILE $JAVA_SECURITY_FILE
+
 echo "Removing unused JDK sources and libraries"
 rm /usr/java/latest/jre/lib/security/README.txt
 rm -rf /usr/java/latest/*src.zip
