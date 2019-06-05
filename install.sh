@@ -23,7 +23,7 @@ apk --no-cache add \
 
 echo "Installing tools for downloading environment configuration during service run script"
 pip install --upgrade pip
-pip install \
+pip install --ignore-installed \
   awscli \
   docker-py \
   j2cli \
