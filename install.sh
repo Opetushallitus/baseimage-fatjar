@@ -23,15 +23,15 @@ apk --no-cache add \
 
 echo "Installing tools for downloading environment configuration during service run script"
 pip install --upgrade pip
-pip install --ignore-installed \
+pip install \
   awscli \
   docker-py \
   j2cli \
   jinja2 \
   jinja2-cli \
   pyasn1 \
-  'pyyaml<=3.13,>=3.10' \
   six
+pip install --ignore-installed 'pyyaml<=3.13,>=3.10' \
 rm -rf /root/.cache
 
 echo "Installing glibc for compiling locale definitions"
