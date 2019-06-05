@@ -30,7 +30,7 @@ pip install \
   jinja2 \
   jinja2-cli \
   pyasn1 \
-  pyyaml \
+  'pyyaml<=3.13,>=3.10' \
   six
 rm -rf /root/.cache
 
