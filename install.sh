@@ -24,7 +24,6 @@ rm -rf /usr/lib/python3/dist-packages/PyYAML-*
 pip install --ignore-installed 'pyyaml==3.13'  # awscli requires this version. Unfortunately it has CVE-2017-18342
 
 echo "Installing tools for downloading environment configuration during service run script"
-rm -rf /usr/lib/python3/dist-packages/PyYAML-*
 pip install --upgrade pip
 pip install \
   awscli \
