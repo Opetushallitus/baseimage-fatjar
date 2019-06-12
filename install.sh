@@ -53,12 +53,11 @@ mkdir /root/.m2/
 mkdir /root/.ivy2/
 
 echo "Installing Java JDK"
-JDK_DL_PREFIX="https://download.oracle.com/otn-pub/java/jdk/8u201-b09/42970487e3af4f5aa5bca3f542482c60"
-JDK_PACKAGE="jdk-8u201-linux-x64.tar.gz"
-JCE_DL_PREFIX="https://download.oracle.com/otn-pub/java/jce/8"
+FILES_URL_PREFIX="https://oph-public-files.s3-eu-west-1.amazonaws.com/${DL_PATH_TOKEN}/jdk/"
+JDK_PACKAGE="jdk-8u202-linux-x64.tar.gz"
 JCE_PACKAGE="jce_policy-8.zip"
-wget -c -q -P /tmp/ --header "Cookie: oraclelicense=accept-securebackup-cookie" ${JDK_DL_PREFIX}/${JDK_PACKAGE}
-wget -c -q -P /tmp/ --header "Cookie: oraclelicense=accept-securebackup-cookie" ${JCE_DL_PREFIX}/${JCE_PACKAGE}
+wget -c -q -P /tmp/ ${FILES_URL_PREFIX}/${JDK_PACKAGE}
+wget -c -q -P /tmp/ ${FILES_URL_PREFIX}/${JCE_PACKAGE}
 mkdir -p /usr/java/latest
 tar xf /tmp/${JDK_PACKAGE} -C /usr/java/latest --strip-components=1
 ln -s /usr/java/latest/bin/* /usr/bin/
