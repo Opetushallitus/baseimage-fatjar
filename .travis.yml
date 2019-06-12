@@ -19,7 +19,7 @@ install:
 
 script:
   - export DOCKER_TARGET="${ECR_REPO}/${ARTIFACT_NAME}:ci-${TRAVIS_BUILD_NUMBER}"
-  - docker build -t ${DOCKER_TARGET} .
+  - docker build -t ${DOCKER_TARGET} --build-arg DL_PATH_TOKEN="${DL_PATH_TOKEN}" .
   - docker images
 
 deploy:
