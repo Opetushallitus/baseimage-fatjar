@@ -53,10 +53,6 @@ echo "Creating cache directories for package managers"
 mkdir /root/.m2/
 mkdir /root/.ivy2/
 
-echo "Generating SSH key and getting GitHub public keys"
-/usr/bin/ssh-keygen -q -t rsa -f /root/.ssh/id_rsa -N ""
-/usr/bin/ssh-keyscan -H github.com >> /root/.ssh/known_hosts
-
 echo "Installing Bouncy Castle bcprov security provider"
 BCPROV_DL_PREFIX="https://www.bouncycastle.org/download"
 BCPROV_PACKAGE="bcprov-jdk15on-161.jar"
