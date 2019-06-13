@@ -13,10 +13,8 @@ apk --no-cache add \
   openssh \
   openssl \
   python \
-  py-yaml \
   py-jinja2 \
   py-pip \
-  py2-yaml \
   ttf-dejavu \
   unzip \
   wget \
@@ -27,6 +25,10 @@ ln -s /usr/lib/libfontconfig.so.1 /usr/lib/libfontconfig.so && \
   ln -s /lib/libuuid.so.1 /usr/lib/libuuid.so.1 && \
   ln -s /lib/libc.musl-x86_64.so.1 /usr/lib/libc.musl-x86_64.so.1
 
+echo "Install specific version of PyYAML for awscli, fixes version conflict"
+rm -rf /usr/lib/python3/dist-packages/PyYAML-*
+pip install --ignore-installed 'pyyaml==3.13' # awscli requires this version. Unfortunately it has CVE-2017-18342
+
 echo "Installing tools for downloading environment configuration during service run script"
 pip install --upgrade pip
 pip install \
@@ -36,7 +38,6 @@ pip install \
   jinja2 \
   jinja2-cli \
   pyasn1 \
-  pyyaml \
   six
 rm -rf /root/.cache
 
