@@ -11,6 +11,13 @@ echo "Downloading environment-specific properties"
 env_config_path=${ENV_CONFIG_S3_PATH:-/services/}
 env_config_version=${ENV_CONFIG_VERSION:-latest}
 aws s3 cp s3://${ENV_BUCKET}${env_config_path}${env_config_version}/ ${CONFIGPATH}/ --recursive --exclude "templates/*"
+
+# append SSM parameters to $VARS
+ssm_vars=$(env | grep ssm_)
+for ssm_var in ${ssm_vars}; do
+  echo "$(echo "${ssm_var}" | sed "s/ssm_//g" | sed "s/=/: \"/g")\"" >> "${VARS}"
+done
+
 cp -vr ${CONFIGPATH}/* ${BASEPATH}/oph-configuration/
 
 echo "Overwriting with AWS-specific configs..."
