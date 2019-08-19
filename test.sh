@@ -9,10 +9,10 @@ j2 --version
 cat /etc/alpine-release
 
 echo "Test that baseimage has files expected by the application during run script"
-ls -la /root/jmx_prometheus_javaagent.jar
-ls -la /root/node_exporter
-ls -la /tmp/scripts/run
-ls -la /root/oph-configuration/
+ls -la /usr/local/bin/jmx_prometheus_javaagent.jar
+ls -la /usr/local/bin/node_exporter
+ls -la /usr/local/bin/run
+ls -la /etc/oph/
 ls -la /opt/java/openjdk/jre/lib/security/cacerts
 
 echo "Largest directories:"
