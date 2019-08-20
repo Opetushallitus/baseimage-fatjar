@@ -92,5 +92,13 @@ rm -rf node_exporter-${NODE_EXPORTER_VERSION}.linux-amd64
 echo "Init Prometheus config file"
 echo "{}" > /etc/prometheus.yaml
 
+echo "Symlink /root/logs,dumps to /home/oph/logs,dumps for backwards compatibility"
+chown -R oph:oph /root
+for path in logs dumps; do
+  ln -s /home/oph/$path /root/$path
+  chown oph:oph -h /root/$path
+done
+
+
 echo "Make run script executable"
 chmod ug+x /usr/local/bin/run
