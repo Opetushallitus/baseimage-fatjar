@@ -39,6 +39,7 @@ do
   chmod 0755 ${target}
 done
 
+echo "Copying keystore file to home directory"
 cp /opt/java/openjdk/jre/lib/security/cacerts /home/oph/
 
 CACERTSPWD="`grep "java_cacerts_pwd" /etc/oph-environment/opintopolku.yml | grep -o -e '\".*\"' | sed 's/^\"\(.*\)\"$/\1/'`"
