@@ -52,7 +52,6 @@ fi
 export LC_CTYPE=fi_FI.UTF-8
 export JAVA_TOOL_OPTIONS='-Dfile.encoding=UTF-8'
 export JMX_PORT=1133
-mkdir -p /home/oph/logs
 
 echo "Starting Prometheus node_exporter..."
 nohup /usr/local/bin/node_exporter > /home/oph/node_exporter.log  2>&1 &
