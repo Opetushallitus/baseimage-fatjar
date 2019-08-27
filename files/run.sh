@@ -42,7 +42,7 @@ done
 echo "Copying keystore file to home directory"
 cp /opt/java/openjdk/lib/security/cacerts /home/oph/
 
-CACERTSPWD="`grep "java_cacerts_pwd" /etc/oph-environment/opintopolku.yml | grep -o -e '\".*\"' | sed 's/^\"\(.*\)\"$/\1/'`"
+CACERTSPWD="`grep "java_cacerts_pwd" /home/oph/oph-environment/opintopolku.yml | grep -o -e '\".*\"' | sed 's/^\"\(.*\)\"$/\1/'`"
 if [ -f "${CERT}" ]; then
   echo "Installing local certificates to Java..."
   openssl x509 -outform der -in ${CERT} -out /tmp/ssl.der
