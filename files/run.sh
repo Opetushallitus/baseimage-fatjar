@@ -102,7 +102,7 @@ if [ -f "${STANDALONE_JAR}" ]; then
     export LOGS="${HOME}/logs"
 
     JAVA_OPTS="$JAVA_OPTS -Duser.home=${HOME}"
-    JAVA_OPTS="$JAVA_OPTS -Djavax.net.ssl.keyStore=${HOME}/cacerts"
+    JAVA_OPTS="$JAVA_OPTS -Djavax.net.ssl.trustStore=${HOME}/cacerts"
     JAVA_OPTS="$JAVA_OPTS -DHOSTNAME=`hostname`"
     JAVA_OPTS="$JAVA_OPTS -Djava.security.egd=file:/dev/urandom"
     JAVA_OPTS="$JAVA_OPTS -Djava.net.preferIPv4Stack=true"
