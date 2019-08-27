@@ -40,7 +40,7 @@ do
 done
 
 echo "Copying keystore file to home directory"
-cp /opt/java/openjdk/jre/lib/security/cacerts /home/oph/
+cp /opt/java/openjdk/lib/security/cacerts /home/oph/
 
 CACERTSPWD="`grep "java_cacerts_pwd" /etc/oph-environment/opintopolku.yml | grep -o -e '\".*\"' | sed 's/^\"\(.*\)\"$/\1/'`"
 if [ -f "${CERT}" ]; then
@@ -58,7 +58,7 @@ nohup /usr/local/bin/node_exporter > /home/oph/node_exporter.log  2>&1 &
 
 if [ ${DEBUG_ENABLED} == "true" ]; then
   echo "JDWP debugging enabled..."
-  DEBUG_PARAMS=" -Xdebug -Xrunjdwp:transport=dt_socket,address=1233,server=y,suspend=n"
+  DEBUG_PARAMS=" -agentlib:jdwp=transport=dt_socket,address=*:1233,server=y,suspend=n"
 else
   echo "JDWP debugging disabled..."
   DEBUG_PARAMS=""
@@ -126,12 +126,7 @@ if [ -f "${STANDALONE_JAR}" ]; then
     JAVA_OPTS="$JAVA_OPTS -Dcom.sun.management.jmxremote.rmi.port=${JMX_PORT}"
     JAVA_OPTS="$JAVA_OPTS -Dcom.sun.management.jmxremote.local.only=false"
     JAVA_OPTS="$JAVA_OPTS -Djava.rmi.server.hostname=localhost"
-    JAVA_OPTS="$JAVA_OPTS -Xloggc:${LOGS}/${NAME}_gc.log"
-    JAVA_OPTS="$JAVA_OPTS -XX:+PrintGCDetails"
-    JAVA_OPTS="$JAVA_OPTS -XX:+PrintGCTimeStamps"
-    JAVA_OPTS="$JAVA_OPTS -XX:+UseGCLogFileRotation"
-    JAVA_OPTS="$JAVA_OPTS -XX:NumberOfGCLogFiles=10"
-    JAVA_OPTS="$JAVA_OPTS -XX:GCLogFileSize=10m"
+    JAVA_OPTS="$JAVA_OPTS -Xlog:gc*:file=${LOGS}/${NAME}_gc.log:uptime:filecount=10,filesize=10m"
     JAVA_OPTS="$JAVA_OPTS -XX:+HeapDumpOnOutOfMemoryError"
     JAVA_OPTS="$JAVA_OPTS -XX:HeapDumpPath=${HOME}/dumps/${NAME}_heap_dump-`date +%Y-%m-%d-%H-%M-%S`.hprof"
     JAVA_OPTS="$JAVA_OPTS -XX:ErrorFile=${LOGS}/${NAME}_hs_err.log"
@@ -139,8 +134,9 @@ if [ -f "${STANDALONE_JAR}" ]; then
     JAVA_OPTS="$JAVA_OPTS -javaagent:/usr/local/bin/jmx_prometheus_javaagent.jar=1134:/etc/prometheus.yaml"
     JAVA_OPTS="$JAVA_OPTS ${SECRET_JAVA_OPTS}"
     JAVA_OPTS="$JAVA_OPTS ${DEBUG_PARAMS}"
-    echo "java ${JAVA_OPTS} -jar ${STANDALONE_JAR}" > ${HOME}/java-cmd.txt
-    java ${JAVA_OPTS} -jar ${STANDALONE_JAR}
+    JAVA_CMD="java ${JAVA_OPTS} -jar ${STANDALONE_JAR}"
+    echo $JAVA_CMD > /root/java-cmd.txt
+    eval $JAVA_CMD
 else
   echo "Fatal error: No fatjar found, exiting!"
   exit 1

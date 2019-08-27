@@ -14,10 +14,16 @@ apk --no-cache add \
   openssl \
   python \
   py-jinja2 \
+  ttf-dejavu \
   py-pip \
   unzip \
   wget \
   zip
+
+echo "Kludging font libraries in place"
+ln -s /usr/lib/libfontconfig.so.1 /usr/lib/libfontconfig.so && \
+ln -s /lib/libuuid.so.1 /usr/lib/libuuid.so.1 && \
+ln -s /lib/libc.musl-x86_64.so.1 /usr/lib/libc.musl-x86_64.so.1
 
 echo "Install specific version of PyYAML for awscli, fixes version conflict"
 rm -rf /usr/lib/python3/dist-packages/PyYAML-*
@@ -59,19 +65,6 @@ mkdir /home/oph/.m2/
 mkdir /home/oph/.ivy2/
 
 mkdir /etc/oph
-
-echo "Installing Bouncy Castle bcprov security provider"
-BCPROV_DL_PREFIX="https://www.bouncycastle.org/download"
-BCPROV_PACKAGE="bcprov-jdk15on-161.jar"
-wget -c -q -P /usr/java/latest/jre/lib/ext/ ${BCPROV_DL_PREFIX}/${BCPROV_PACKAGE}
-echo "dba6e408f205215ad1a89b70b37353d3cdae4ec61037e1feee885704e2413458  /usr/java/latest/jre/lib/ext/${BCPROV_PACKAGE}" |sha256sum -c
-
-echo "Updating java.security"
-JAVA_SECURITY_FILE=/opt/java/openjdk/jre/lib/security/java.security
-TMP_SECURITY_FILE=/tmp/java.security.new
-BC_SECURITY_PROVIDER_LINE="security.provider.10=org.bouncycastle.jce.provider.BouncyCastleProvider"
-awk -v line_to_insert="$BC_SECURITY_PROVIDER_LINE" '/^security.provider./ { if (inserted!=1) {print line_to_insert; inserted=1}  } { print $0 }' $JAVA_SECURITY_FILE > $TMP_SECURITY_FILE
-mv $TMP_SECURITY_FILE $JAVA_SECURITY_FILE
 
 echo "Installing Prometheus jmx_exporter"
 JMX_EXPORTER_VERSION="0.3.1"
