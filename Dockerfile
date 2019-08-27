@@ -9,3 +9,4 @@ RUN \
   sh install.sh && \
   sh test.sh && \
   rm *.sh
+
