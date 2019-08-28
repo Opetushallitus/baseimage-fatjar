@@ -94,7 +94,7 @@ if [ -f "${STANDALONE_JAR}" ]; then
       export APP=virkailija
     elif [ ${NAME} == "osaan" ]; then
         echo "Running osaan database migration"
-        java -jar ${HOME}/osaan-db.jar -u oph
+        java -jar /usr/local/bin/osaan-db.jar -u oph
     fi
 
 
