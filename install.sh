@@ -57,9 +57,9 @@ mkdir /root/.ivy2/
 
 echo "Installing Bouncy Castle bcprov security provider"
 BCPROV_DL_PREFIX="https://www.bouncycastle.org/download"
-BCPROV_PACKAGE="bcprov-jdk15on-161.jar"
+BCPROV_PACKAGE="bcprov-jdk15on-163.jar"
 wget -c -q -P /usr/java/latest/jre/lib/ext/ ${BCPROV_DL_PREFIX}/${BCPROV_PACKAGE}
-echo "dba6e408f205215ad1a89b70b37353d3cdae4ec61037e1feee885704e2413458  /usr/java/latest/jre/lib/ext/${BCPROV_PACKAGE}" |sha256sum -c
+echo "28155c8695934f666fabc235f992096e40d97ecb044d5b6b0902db6e15a0b72f  /usr/java/latest/jre/lib/ext/${BCPROV_PACKAGE}" |sha256sum -c
 
 echo "Updating java.security"
 JAVA_SECURITY_FILE=/opt/java/openjdk/jre/lib/security/java.security
