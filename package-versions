@@ -7,7 +7,7 @@ bzip2-1.0.6-r7
 ca-certificates-20190108-r0
 ca-certificates-cacert-20190108-r0
 encodings-1.0.4-r1
-expat-2.2.7-r0
+expat-2.2.7-r1
 fontconfig-2.13.1-r0
 freetype-2.10.0-r0
 gdbm-1.13-r1
@@ -41,7 +41,7 @@ openssh-keygen-8.0_p1-r0
 openssh-server-8.0_p1-r0
 openssh-server-common-8.0_p1-r0
 openssh-sftp-server-8.0_p1-r0
-openssl-1.1.1c-r0
+openssl-1.1.1d-r0
 py-jinja2-2.10-r3
 py-markupsafe-1.1.1-r1
 py-setuptools-40.8.0-r1
