@@ -45,11 +45,8 @@ echo "Downloading glibc for compiling locale definitions"
 GLIBC_VERSION="2.30-r0"
 wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub
 wget -q https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-${GLIBC_VERSION}.apk
-echo "f0a00f56fdee9dc888bafec0bf8f54fb188e99b5346032251abb79ef9c99f079  glibc-${GLIBC_VERSION}.apk" |sha256sum -c
 wget -q https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-bin-${GLIBC_VERSION}.apk
-echo "b9a0d8359b12a9768f6378156f160d40f8e432e78e0b2aabc9d0a81e216e7f49  glibc-bin-${GLIBC_VERSION}.apk" |sha256sum -c
 wget -q https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-i18n-${GLIBC_VERSION}.apk
-echo "948aa0a87b2b93cef561d31c02060a162d592a3545af56171c3f8b0d6f918a48  glibc-i18n-${GLIBC_VERSION}.apk" |sha256sum -c
 
 echo "Installing glibc for compiling locale definitions"
 apk add \
