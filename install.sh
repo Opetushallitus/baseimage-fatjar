@@ -73,7 +73,7 @@ mv jmx_prometheus_javaagent.jar /usr/local/bin/
 echo "Installing Prometheus node_exporter"
 NODE_EXPORTER_VERSION="0.18.1"
 wget -q https://github.com/prometheus/node_exporter/releases/download/v${NODE_EXPORTER_VERSION}/node_exporter-${NODE_EXPORTER_VERSION}.linux-amd64.tar.gz
-echo "7ffb3773abb71dd2b2119c5f6a7a0dbca0cff34b24b2ced9e01d9897df61a127  node_exporter-${NODE_EXPORTER_VERSION}.linux-amd64.tar.gz" |sha256sum -c
+echo "b2503fd932f85f4e5baf161268854bf5d22001869b84f00fd2d1f57b51b72424  node_exporter-${NODE_EXPORTER_VERSION}.linux-amd64.tar.gz" |sha256sum -c
 tar -xvzf node_exporter-${NODE_EXPORTER_VERSION}.linux-amd64.tar.gz
 rm node_exporter-${NODE_EXPORTER_VERSION}.linux-amd64.tar.gz
 mv node_exporter-${NODE_EXPORTER_VERSION}.linux-amd64/node_exporter /usr/local/bin/
