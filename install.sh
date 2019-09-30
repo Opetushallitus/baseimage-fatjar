@@ -49,8 +49,10 @@ rm -v glibc-*.apk
 /usr/glibc-compat/bin/localedef -i fi_FI -f UTF-8 fi_FI.UTF-8
 
 echo "Creating cache directories for package managers"
-mkdir /root/.m2/
-mkdir /root/.ivy2/
+mkdir /home/oph/.m2/
+mkdir /home/oph/.ivy2/
+
+mkdir /etc/oph
 
 echo "Installing Bouncy Castle bcprov security provider"
 BCPROV_DL_PREFIX="https://www.bouncycastle.org/download"
@@ -70,6 +72,7 @@ JMX_EXPORTER_VERSION="0.12.0"
 wget -q https://repo1.maven.org/maven2/io/prometheus/jmx/jmx_prometheus_javaagent/${JMX_EXPORTER_VERSION}/jmx_prometheus_javaagent-${JMX_EXPORTER_VERSION}.jar
 mv jmx_prometheus_javaagent-${JMX_EXPORTER_VERSION}.jar jmx_prometheus_javaagent.jar
 echo "6c7d195cb67a09517ec1469c214b3d8ab0030bdbaa9e2ee06a9995d7b03c707c  jmx_prometheus_javaagent.jar" |sha256sum -c
+mv jmx_prometheus_javaagent.jar /usr/local/bin/
 
 echo "Installing Prometheus node_exporter"
 NODE_EXPORTER_VERSION="0.18.1"
@@ -77,14 +80,11 @@ wget -q https://github.com/prometheus/node_exporter/releases/download/v${NODE_EX
 echo "b2503fd932f85f4e5baf161268854bf5d22001869b84f00fd2d1f57b51b72424  node_exporter-${NODE_EXPORTER_VERSION}.linux-amd64.tar.gz" |sha256sum -c
 tar -xvzf node_exporter-${NODE_EXPORTER_VERSION}.linux-amd64.tar.gz
 rm node_exporter-${NODE_EXPORTER_VERSION}.linux-amd64.tar.gz
-mv node_exporter-${NODE_EXPORTER_VERSION}.linux-amd64/node_exporter /root/
+mv node_exporter-${NODE_EXPORTER_VERSION}.linux-amd64/node_exporter /usr/local/bin/
 rm -rf node_exporter-${NODE_EXPORTER_VERSION}.linux-amd64
 
 echo "Init Prometheus config file"
-echo "{}" > /root/prometheus.yaml
+echo "{}" > /etc/prometheus.yaml
 
 echo "Make run script executable"
-chmod ug+x /tmp/scripts/run
-
-echo "Make oph-configuration directory to ensure run script works also for projects that do not supply such directory"
-mkdir /root/oph-configuration
+chmod ug+x /usr/local/bin/run

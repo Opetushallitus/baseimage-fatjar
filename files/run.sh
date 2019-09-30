@@ -1,11 +1,14 @@
 #!/bin/bash -e
 #
 
-BASEPATH="/root"
-CONFIGPATH="/etc/oph-environment"
+BASEPATH="/home/oph"
+CONFIGPATH="/home/oph/oph-environment"
 VARS="${CONFIGPATH}/opintopolku.yml"
 CERT="${CONFIGPATH}/cert/ssl.pem"
 LOGPATH="${CONFIGPATH}/log"
+
+echo "Copying templates to home directory"
+cp -vr /etc/oph/* ${BASEPATH}
 
 echo "Downloading environment-specific properties"
 env_config_path=${ENV_CONFIG_S3_PATH:-/services/}
@@ -38,20 +41,22 @@ do
   chmod 0755 ${target}
 done
 
-CACERTSPWD="`grep "java_cacerts_pwd" /etc/oph-environment/opintopolku.yml | grep -o -e '\".*\"' | sed 's/^\"\(.*\)\"$/\1/'`"
+echo "Copying keystore file to home directory"
+cp /opt/java/openjdk/jre/lib/security/cacerts /home/oph/
+
+CACERTSPWD="`grep "java_cacerts_pwd" /home/oph/oph-environment/opintopolku.yml | grep -o -e '\".*\"' | sed 's/^\"\(.*\)\"$/\1/'`"
 if [ -f "${CERT}" ]; then
   echo "Installing local certificates to Java..."
   openssl x509 -outform der -in ${CERT} -out /tmp/ssl.der
-  keytool -import -noprompt -storepass ${CACERTSPWD} -alias opintopolku -keystore /opt/java/openjdk/jre/lib/security/cacerts -file /tmp/ssl
+  keytool -import -noprompt -storepass ${CACERTSPWD} -alias opintopolku -keystore /home/oph/cacerts -file /tmp/ssl
 fi
 
 export LC_CTYPE=fi_FI.UTF-8
 export JAVA_TOOL_OPTIONS='-Dfile.encoding=UTF-8'
 export JMX_PORT=1133
-mkdir -p /root/logs
 
 echo "Starting Prometheus node_exporter..."
-nohup /root/node_exporter > /root/node_exporter.log  2>&1 &
+nohup /usr/local/bin/node_exporter > /home/oph/node_exporter.log  2>&1 &
 
 if [ ${DEBUG_ENABLED} == "true" ]; then
   echo "JDWP debugging enabled..."
@@ -64,7 +69,7 @@ fi
 echo "Using java options: ${JAVA_OPTS}"
 echo "Using secret java options: ${SECRET_JAVA_OPTS}"
 
-STANDALONE_JAR=${HOME}/${NAME}.jar
+STANDALONE_JAR=/usr/local/bin/${NAME}.jar
 if [ -f "${STANDALONE_JAR}" ]; then
     echo "Starting standalone application..."
 
@@ -75,30 +80,31 @@ if [ -f "${STANDALONE_JAR}" ]; then
       YTLCERT="${CONFIGPATH}/suoritusrekisteri/ytlqa.crt"
       if [ -f "${YTLCERT}" ]; then
             echo "Installing YTL certificate for suoritusrekisteri"
-            keytool -import -noprompt -trustcacerts -alias ytl_qa_cert -storepass ${CACERTSPWD} -keystore /opt/java/openjdk/jre/lib/security/cacerts -file ${YTLCERT}
+            keytool -import -noprompt -trustcacerts -alias ytl_qa_cert -storepass ${CACERTSPWD} -keystore /home/oph/cacerts -file ${YTLCERT}
         else
             echo "YTL test certificate not found"
       fi
     elif [ ${NAME} == "ataru-hakija" ]; then
       export ATARU_HTTP_PORT=8080
-      export CONFIG=/root/oph-configuration/config.edn
-      export CONFIGDEFAULTS=/root/oph-configuration/config.edn
+      export CONFIG=/home/oph/oph-configuration/config.edn
+      export CONFIGDEFAULTS=/home/oph/oph-configuration/config.edn
       export APP=hakija
     elif [ ${NAME} == "ataru-editori" ]; then
       export ATARU_HTTP_PORT=8080
-      export CONFIG=/root/oph-configuration/config.edn
-      export CONFIGDEFAULTS=/root/oph-configuration/config.edn
+      export CONFIG=/home/oph/oph-configuration/config.edn
+      export CONFIGDEFAULTS=/home/oph/oph-configuration/config.edn
       export APP=virkailija
     elif [ ${NAME} == "osaan" ]; then
         echo "Running osaan database migration"
-        java -jar ${HOME}/osaan-db.jar -u oph
+        java -jar /usr/local/bin/osaan-db.jar -u oph
     fi
 
 
-    export HOME="/root"
+    export HOME="/home/oph"
     export LOGS="${HOME}/logs"
 
     JAVA_OPTS="$JAVA_OPTS -Duser.home=${HOME}"
+    JAVA_OPTS="$JAVA_OPTS -Djavax.net.ssl.trustStore=${HOME}/cacerts"
     JAVA_OPTS="$JAVA_OPTS -DHOSTNAME=`hostname`"
     JAVA_OPTS="$JAVA_OPTS -Djava.security.egd=file:/dev/urandom"
     JAVA_OPTS="$JAVA_OPTS -Djava.net.preferIPv4Stack=true"
@@ -132,10 +138,10 @@ if [ -f "${STANDALONE_JAR}" ]; then
     JAVA_OPTS="$JAVA_OPTS -XX:HeapDumpPath=${HOME}/dumps/${NAME}_heap_dump-`date +%Y-%m-%d-%H-%M-%S`.hprof"
     JAVA_OPTS="$JAVA_OPTS -XX:ErrorFile=${LOGS}/${NAME}_hs_err.log"
     JAVA_OPTS="$JAVA_OPTS -D${NAME}.properties=${HOME}/oph-configuration/${NAME}.properties"
-    JAVA_OPTS="$JAVA_OPTS -javaagent:/root/jmx_prometheus_javaagent.jar=1134:/root/prometheus.yaml"
+    JAVA_OPTS="$JAVA_OPTS -javaagent:/usr/local/bin/jmx_prometheus_javaagent.jar=1134:/etc/prometheus.yaml"
     JAVA_OPTS="$JAVA_OPTS ${SECRET_JAVA_OPTS}"
     JAVA_OPTS="$JAVA_OPTS ${DEBUG_PARAMS}"
-    echo "java ${JAVA_OPTS} -jar ${STANDALONE_JAR}" > /root/java-cmd.txt
+    echo "java ${JAVA_OPTS} -jar ${STANDALONE_JAR}" > ${HOME}/java-cmd.txt
     java ${JAVA_OPTS} -jar ${STANDALONE_JAR}
 else
   echo "Fatal error: No fatjar found, exiting!"
