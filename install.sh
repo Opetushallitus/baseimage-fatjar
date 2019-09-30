@@ -13,9 +13,7 @@ apk --no-cache add \
   openssh \
   openssl \
   python3 \
-  py-jinja2 \
   ttf-dejavu \
-  py-pip \
   unzip \
   wget \
   zip
