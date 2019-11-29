@@ -79,4 +79,4 @@ echo "Init Prometheus config file"
 echo "{}" > /etc/prometheus.yaml
 
 echo "Make run script executable"
-chmod ug+x /usr/local/bin/run
+chmod +x /usr/local/bin/run
