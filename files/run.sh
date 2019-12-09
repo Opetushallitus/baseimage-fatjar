@@ -8,7 +8,7 @@ VARS="${CONFIGPATH}/opintopolku.yml"
 LOGPATH="${CONFIGPATH}/log"
 
 echo "Copying templates to home directory"
-cp -vr /etc/oph/* ${BASEPATH}
+cp -vr /etc/oph/. ${BASEPATH}
 
 echo "Downloading environment-specific properties"
 env_config_path=${ENV_CONFIG_S3_PATH:-/services/}
