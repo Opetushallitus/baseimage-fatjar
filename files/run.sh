@@ -5,7 +5,6 @@ set -e
 BASEPATH="/home/oph"
 CONFIGPATH="/home/oph/oph-environment"
 VARS="${CONFIGPATH}/opintopolku.yml"
-CERT="${CONFIGPATH}/cert/ssl.pem"
 LOGPATH="${CONFIGPATH}/log"
 
 echo "Copying templates to home directory"
@@ -45,13 +44,6 @@ done
 echo "Copying keystore file to home directory"
 cp /opt/java/openjdk/jre/lib/security/cacerts /home/oph/
 
-CACERTSPWD="`grep "java_cacerts_pwd" /home/oph/oph-environment/opintopolku.yml | grep -o -e '\".*\"' | sed 's/^\"\(.*\)\"$/\1/'`"
-if [ -f "${CERT}" ]; then
-  echo "Installing local certificates to Java..."
-  openssl x509 -outform der -in ${CERT} -out /tmp/ssl.der
-  keytool -import -noprompt -storepass ${CACERTSPWD} -alias opintopolku -keystore /home/oph/cacerts -file /tmp/ssl
-fi
-
 export LC_CTYPE=fi_FI.UTF-8
 export JAVA_TOOL_OPTIONS='-Dfile.encoding=UTF-8'
 export JMX_PORT=1133
@@ -78,12 +70,12 @@ if [ -f "${STANDALONE_JAR}" ]; then
     if [ ${NAME} == "suoritusrekisteri" ]; then
       echo "Create common.properties"
       cp -fv ${BASEPATH}/oph-configuration/${NAME}.properties ${BASEPATH}/oph-configuration/common.properties
+
       YTLCERT="${CONFIGPATH}/suoritusrekisteri/ytlqa.crt"
       if [ -f "${YTLCERT}" ]; then
-            echo "Installing YTL certificate for suoritusrekisteri"
-            keytool -import -noprompt -trustcacerts -alias ytl_qa_cert -storepass ${CACERTSPWD} -keystore /home/oph/cacerts -file ${YTLCERT}
-        else
-            echo "YTL test certificate not found"
+        echo "Installing YTL certificate for suoritusrekisteri"
+        TRUSTSTORE_PWD=$(grep "java_cacerts_pwd" /home/oph/oph-environment/opintopolku.yml | cut -d ":" -f 2 | sed "s/^ *//g")
+        keytool -import -noprompt -trustcacerts -alias ytl_qa_cert -storepass ${TRUSTSTORE_PWD} -keystore /home/oph/cacerts -file ${YTLCERT}
       fi
     elif [ ${NAME} == "ataru-hakija" ]; then
       export ATARU_HTTP_PORT=8080
@@ -99,7 +91,6 @@ if [ -f "${STANDALONE_JAR}" ]; then
         echo "Running osaan database migration"
         java -jar /usr/local/bin/osaan-db.jar -u oph
     fi
-
 
     export HOME="/home/oph"
     export LOGS="${HOME}/logs"
