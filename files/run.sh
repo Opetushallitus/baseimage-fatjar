@@ -23,6 +23,7 @@ for ssm_var in ${ssm_vars}; do
   echo "${var_name}: \"${var_value}\"" >> "${VARS}"
 done
 
+mkdir -p ${BASEPATH}/oph-configuration
 cp -vr ${CONFIGPATH}/* ${BASEPATH}/oph-configuration/
 
 echo "Overwriting with AWS-specific configs..."
