@@ -24,7 +24,8 @@ install:
 
 script:
   - export DOCKER_TARGET="${ECR_REPO}/${ARTIFACT_NAME}:ci-${TRAVIS_BUILD_NUMBER}"
-  - docker build -t ${DOCKER_TARGET} --build-arg DL_PATH_TOKEN="${DL_PATH_TOKEN}" .
+  - export BUILD_TIME="$(date -u --iso-8601=seconds)"
+  - docker build --label BaseimageType="$(echo ${ARTIFACT_NAME} | cut -d '-' -f 2)-${TRAVIS_BRANCH}" --label BaseimageBuildNumber=ci-${TRAVIS_BUILD_NUMBER} --label BaseimageBuildTime=${BUILD_TIME} -t ${DOCKER_TARGET} --build-arg DL_PATH_TOKEN="${DL_PATH_TOKEN}" .
   - bash ci-tools/version_check/version_check.sh
   - docker images
 
